@@ -1,11 +1,8 @@
 import React from 'react';
+import './Message.css';
 
 function Message(props) {
-  return (
-    <li>
-      <span className="message">{props.text}</span>
-    </li>
-  );
+  return <span className="message">{props.text}</span>;
 }
 
 export default Message;

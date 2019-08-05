@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Message from '../Message';
+import './Chat.css';
 
-class Chat extends React.Component {
+class Chat extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,9 +18,15 @@ class Chat extends React.Component {
   changeInputMessage(e) {
     this.setState({ messageInput: e.target.value });
   }
+  componentDidUpdate() {
+    const messageList = document.querySelector('.message-list');
+    if (messageList)
+      messageList.scrollTop =
+        messageList.scrollHeight - messageList.offsetHeight;
+  }
 
   sendMessageOnEnter(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && this.state.messageInput !== '') {
       this.setState(prevState => {
         return {
           messages: [...prevState.messages, { text: prevState.messageInput }],
@@ -34,11 +41,13 @@ class Chat extends React.Component {
     const { messages, messageInput } = this.state;
     return (
       <div className="chat">
-        <ul>
-          {messages.map((item, index) => {
-            return <Message key={index} text={item.text} />;
-          })}
-        </ul>
+        <div className="message-list">
+          <div className="messages">
+            {messages.map((item, index) => {
+              return <Message key={index} text={item.text} />;
+            })}
+          </div>
+        </div>
         <input
           className="input-message"
           value={messageInput}
